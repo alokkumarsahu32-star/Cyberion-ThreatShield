@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE ATT&CK Coverage | Cyberion ThreatShield</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <style>
+        .coverage-header {
+            margin-bottom: 25px;
+        }
+
+        .coverage-header p {
+            color: #9caec8;
+            margin-top: 8px;
+        }
+
+        .coverage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .coverage-stat {
+            background: #111d32;
+            border: 1px solid #263852;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .coverage-stat span {
+            display: block;
+            color: #9caec8;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .coverage-stat strong {
+            font-size: 27px;
+            color: #e8f0ff;
+        }
+
+        .coverage-section {
+            margin-top: 28px;
+        }
+
+        .coverage-section h2 {
+            margin-bottom: 14px;
+        }
+
+        .coverage-table-wrap {
+            overflow-x: auto;
+            background: #111d32;
+            border: 1px solid #263852;
+            border-radius: 12px;
+        }
+
+        .coverage-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .coverage-table th,
+        .coverage-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #263852;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        .coverage-table th {
+            color: #8fb8ff;
+            background: #172640;
+        }
+
+        .coverage-table td {
+            color: #d4deef;
+        }
+
+        .technique-id {
+            color: #65b5ff;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .coverage-note {
+            margin-top: 14px;
+            padding: 14px;
+            background: #182942;
+            border-left: 3px solid #e5a642;
+            border-radius: 6px;
+            color: #c8d5e8;
+            font-size: 13px;
+        }
+
+        .coverage-progress {
+            height: 9px;
+            background: #263852;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .coverage-progress div {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #2584ff, #38c5d8);
+            border-radius: 20px;
+        }
+
+        .coverage-back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #8fb8ff;
+            text-decoration: none;
+        }
+
+        .coverage-back:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .coverage-stat strong {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>CYBERION</h2>
+            <span>ThreatShield</span>
+        </div>
+
+        <nav>
+    <a href="/">Dashboard</a>
+    <a href="/logs">Log Analyzer</a>
+    <a href="/detection-rules">Detection Engineering</a>
+    <a class="active" href="/attack-coverage">MITRE ATT&CK Coverage</a>
+    <a href="/threat-hunting">Threat Hunting</a>
+    <a href="/incident-cases">Incident Cases</a>
+    <a href="/#reports">Reports &amp; Coverage</a>
+</nav>
+
+        <div class="sidebar-footer">
+            <span>Logged in as {{ username }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <a href="/" class="coverage-back">← Back to Dashboard</a>
+
+        <header class="coverage-header">
+            <h1>MITRE ATT&CK Coverage</h1>
+            <p>
+                Visibility into documented ATT&CK technique mappings
+                across Sigma YAML rules and tested Log Analyzer detections.
+            </p>
+        </header>
+
+        <section class="coverage-stats">
+            <div class="coverage-stat">
+                <span>Documented Techniques</span>
+                <strong>{{ total_techniques }} / {{ target_techniques }}</strong>
+                <div class="coverage-progress">
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="coverage-stat">
+                <span>Remaining to Target</span>
+                <strong>{{ remaining_techniques }}</strong>
+            </div>
+
+            <div class="coverage-stat">
+                <span>Sigma YAML Files</span>
+                <strong>{{ sigma_file_count }}</strong>
+            </div>
+
+            <div class="coverage-stat">
+                <span>Individual / Correlation Rules</span>
+                <strong>{{ individual_count }} / {{ correlation_count }}</strong>
+            </div>
+
+            <div class="coverage-stat">
+                <span>Represented Tactics</span>
+                <strong>{{ tactic_count }}</strong>
+            </div>
+        </section>
+
+        <section class="coverage-section">
+            <h2>Sigma YAML Technique Coverage</h2>
+
+            <div class="coverage-table-wrap">
+                <table class="coverage-table">
+                    <thead>
+                        <tr>
+                            <th>Technique ID</th>
+                            <th>Technique Name</th>
+                            <th>ATT&CK Tactic</th>
+                            <th>Related Detection Rule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sigma_techniques %}
+                        <tr>
+                            <td class="technique-id">{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.tactic }}</td>
+                            <td>{{ item.rule }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="coverage-section">
+            <h2>Log Analyzer Tested Technique Coverage</h2>
+
+            <div class="coverage-table-wrap">
+                <table class="coverage-table">
+                    <thead>
+                        <tr>
+                            <th>Technique ID</th>
+                            <th>Technique Name</th>
+                            <th>ATT&CK Tactic</th>
+                            <th>Detection Rule</th>
+                            <th>Test Evidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in log_analyzer_techniques %}
+                        <tr>
+                            <td class="technique-id">{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.tactic }}</td>
+                            <td>{{ item.rule }}</td>
+                            <td>{{ item.test }} — <span style="color:#48d6a0;">PASS</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="coverage-note">
+                <strong>Testing limitation:</strong>
+                PASS indicates that the dedicated synthetic test passed.
+                It does not establish guaranteed real-world detection effectiveness.
+            </div>
+        </section>
+
+        <section class="coverage-section">
+            <h2>Coverage Methodology</h2>
+
+            <div class="coverage-note">
+                <ul>
+                    <li>Sigma coverage counts explicit ATT&CK technique tags in YAML rules.</li>
+                    <li>Log Analyzer coverage is listed separately and requires dedicated test evidence.</li>
+                    <li>Each unique technique is counted once, even when multiple rules reference it.</li>
+                    <li>Hunt and response playbook references are not counted as additional verified techniques.</li>
+                    <li>The project target is 20+ unique documented techniques.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="coverage-section">
+            <h2>Reference</h2>
+            <p>
+                Official MITRE ATT&CK Enterprise knowledge base:
+                <a href="https://attack.mitre.org/" target="_blank"
+                   rel="noopener noreferrer" style="color:#65b5ff;">
+                    attack.mitre.org
+                </a>
+            </p>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,2 @@
+Computer,EventID,SourceImage,TargetImage,StartAddress,EVTX_Tactic
+IEWIN7,8,C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\notepad.exe,0x00590000,Defense Evasion

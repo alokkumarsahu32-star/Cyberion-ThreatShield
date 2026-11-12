@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Coverage | Cyberion ThreatShield</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 25px 0;
+        }
+        .report-section {
+            margin: 25px 0;
+            padding: 22px;
+            background: rgba(255,255,255,.035);
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 14px;
+        }
+        .report-section h2 { font-size: 19px; margin-bottom: 16px; }
+        .report-list { display: grid; gap: 10px; }
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
+        }
+        .report-item p { margin: 0; font-size: 14px; }
+        .report-open {
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(110deg,#2563eb,#7c3aed);
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .report-note { color: #aebbd0; font-size: 13px; margin-top: 20px; }
+        @media(max-width:600px) {
+            .report-item { align-items: flex-start; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Cyberion</h2>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/logs">Log Analyzer</a>
+            <a href="/detection-rules">Detection Engineering</a>
+            <a href="/attack-coverage">MITRE ATT&CK Coverage</a>
+            <a href="/threat-hunting">Threat Hunting</a>
+            <a href="/incident-cases">Incident Cases</a>
+            <a href="/reports-coverage" class="active">Reports &amp; Coverage</a>
+        </nav>
+        <p class="sidebar-footer">Detection Engineering Lab</p>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <p class="eyebrow">PROJECT DOCUMENTATION</p>
+            <h1>Reports &amp; Coverage</h1>
+            <p class="muted">Central repository of project reports and documentation.</p>
+        </header>
+
+        <section class="report-summary">
+            <article class="stat-card">
+                <p>Total Documents</p>
+                <h2>{{ total_reports }}</h2>
+                <small>Registered project files</small>
+            </article>
+            <article class="stat-card">
+                <p>ATT&amp;CK Coverage</p>
+                <h2>13 / 20</h2>
+                <small>Verified techniques</small>
+            </article>
+            <article class="stat-card">
+                <p>Threat Hunts</p>
+                <h2>2</h2>
+                <small>HUNT-01 and HUNT-02</small>
+            </article>
+            <article class="stat-card">
+                <p>Incident Cases</p>
+                <h2>2</h2>
+                <small>Offline investigations</small>
+            </article>
+        </section>
+
+        {% for group in report_groups %}
+        <section class="report-section">
+            <h2>{{ group.category }}</h2>
+            <div class="report-list">
+                {% for report in group.reports %}
+                <div class="report-item">
+                    <p>{{ report.title }}</p>
+                    <a href="/reports/view/{{ report.id }}"
+                       class="report-open"
+                       target="_blank"
+                       rel="noopener noreferrer">View Report</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+
+        <p class="report-note">
+            Reports represent documented offline analysis and testing.
+            Dataset-based findings are not confirmation of live security incidents.
+            ATT&amp;CK coverage reflects the currently verified count.
+        </p>
+        <footer>Cyberion ThreatShield · Version 0.2.0</footer>
+    </main>
+</div>
+</body>
+</html>

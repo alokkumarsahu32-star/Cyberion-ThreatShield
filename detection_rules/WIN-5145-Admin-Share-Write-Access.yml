@@ -1,0 +1,41 @@
+title: Suspicious Write-Capable Access Through Windows Admin Share
+id: 9f34d1c8-6f0b-4a2c-9b7d-2e8a51c04f63
+name: suspicious_admin_share_write_capable_access
+status: experimental
+description: |
+    Detects Windows Security Event ID 5145 requests involving executable,
+    script, or DLL paths through the C$ administrative share with the
+    observed access mask 0x0017019f. This mask contains write-related
+    access rights. The event indicates requested access, not proof that
+    a file write was successfully completed. The exact mask is based on
+    the current test dataset and is not a universal write-access signature.
+references:
+    - https://attack.mitre.org/techniques/T1021/002/
+author: Cyberion ThreatShield
+date: 2026/11/10
+tags:
+    - attack.lateral_movement
+    - attack.t1021.002
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 5145
+        ShareName|endswith: '\C$'
+        ObjectType: File
+        AccessMask: '0x0017019f'
+    suspicious_file_path:
+        RelativeTargetName|endswith:
+            - '.exe'
+            - '.bat'
+            - '.cmd'
+            - '.ps1'
+            - '.dll'
+            - '.scr'
+            - '.com'
+    condition: selection and suspicious_file_path
+falsepositives:
+    - Approved remote software deployment with write-capable access
+    - Legitimate administrative file staging
+level: high

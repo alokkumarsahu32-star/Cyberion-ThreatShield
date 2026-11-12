@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>CYBERION</h2>
+        <p class="brand-subtitle">THREATSHIELD</p>
+
+        <nav>
+            <a class="active" href="/">Dashboard</a>
+            <a href="/logs">Log Analyzer</a>
+            <a href="/detection-rules">Detection Rules</a>
+            <a href="/attack-coverage">MITRE ATT&CK Coverage</a>
+            <a href="/threat-hunting">Threat Hunting</a>
+            <a href="/incident-cases">Incident Cases</a>
+            <a href="/reports-coverage">Reports & Coverage</a>
+        </nav>
+
+        <p class="sidebar-footer">Detection Engineering Lab</p>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">SECURITY OPERATIONS</p>
+                <h1>Threat Dashboard</h1>
+                <p class="muted">Your detection and threat hunting workspace.</p>
+            </div>
+            <span class="status"><span></span> APPLICATION ONLINE</span>
+        </header>
+
+        <section class="welcome">
+            <p class="eyebrow">WELCOME TO YOUR SECURITY LAB</p>
+            <h2>{{ project_name }}</h2>
+            <p>Analyze security logs, investigate suspicious activity,
+               and manage detection engineering workflows.</p>
+        </section>
+
+        <section class="stats">
+            <article class="stat-card">
+                <p>Dataset Events</p>
+                <h2>4,633</h2>
+                <small>EVTX research dataset</small>
+            </article>
+            <article class="stat-card">
+                <p>Detection Rules</p>
+                <h2>17</h2>
+                <small>14 individual + 3 correlation rules</small>
+            </article>
+            <article class="stat-card">
+                 <p>Verified ATT&amp;CK Techniques</p>
+                 <h2>13 / 20</h2>
+                  <small>Verified coverage progress</small>
+            </article>
+            <article class="stat-card">
+                <p>Threat Hunt Reports</p>
+                <h2>2</h2>
+                <small>HUNT-01 and HUNT-02</small>
+            </article>
+        </section>
+
+        <section class="workspace">
+            <h2>Project Modules</h2>
+            <div class="module-grid">
+                <article class="module-card" id="logs">
+                    <span>01</span>
+                    <h3>Log Analyzer</h3>
+                    <p>Upload and inspect CSV security event logs.</p>
+                    <a href="/logs" class="module-button">Open Log Analyzer</a>
+                    <small></small>
+                </article>
+                <article class="module-card" id="rules">
+                    <span>02</span>
+                    <h3>Detection Engineering</h3>
+                    <p>Manage Sigma rules and ATT&CK mappings.</p>
+                    <a href="/detection-rules" class="module-button">
+    Open Detection Engineering
+</a>
+                    <small></small>
+                </article>
+
+                <article class="module-card" id="attack-coverage">
+                     <span>03</span>
+                      <h3>MITRE ATT&CK Coverage</h3>
+                      <p>Explore 13 documented techniques, tactics, detection mappings, and test evidence.</p>
+                       <a href="/attack-coverage" class="module-button">
+                      Open ATT&CK Coverage
+                         </a>
+                </article>
+                <article class="module-card" id="hunting">
+                     <span>04</span>
+                      <h3>Threat Hunting</h3>
+                      <p>
+                         Review HUNT-01 and HUNT-02 investigations,
+                         correlation results, evidence and findings.
+                      </p>
+                          <a href="/threat-hunting" class="module-button">
+                        Open Threat Hunting
+                         </a>
+                </article>
+                
+<article class="module-card" id="incidents">
+    <span>04</span>
+    <h3>Incident Management</h3>
+    <p>
+        Review CASE-01 and CASE-02 investigation reports,
+        evidence and analytical findings.
+    </p>
+    <a href="/incident-cases" class="module-button">
+        Open Incident Cases
+    </a>
+</article>
+
+                <article class="module-card" id="reports">
+    <span>05</span>
+    <h3>Reports &amp; Coverage</h3>
+    <p>
+        Access 33 project reports covering detection testing,
+        tuning, threat hunting, incident cases and documentation.
+    </p>
+    <a href="/reports-coverage" class="module-button">
+        Open Reports &amp; Coverage
+    </a>
+</article>
+            </div>
+        </section>
+
+        <footer>Cyberion ThreatShield · Version {{ version }}</footer>
+    </main>
+</body>
+</html>
+

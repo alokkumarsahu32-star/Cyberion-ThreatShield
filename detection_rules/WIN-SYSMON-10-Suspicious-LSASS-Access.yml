@@ -1,0 +1,31 @@
+title: Known Credential Dumping Tool Accessing LSASS
+id: 6b3a9c42-8d71-4e25-a6f0-2b9d7c51e843
+name: suspicious_lsass_access
+status: experimental
+description: Detects Sysmon ProcessAccess events where known credential dumping utilities access the LSASS process.
+references:
+    - https://attack.mitre.org/techniques/T1003/
+author: Cyberion ThreatShield
+date: 2026/11/01
+tags:
+    - attack.credential_access
+    - attack.t1003
+logsource:
+    product: windows
+    category: process_access
+detection:
+    selection:
+        TargetImage|endswith: '\lsass.exe'
+    suspicious_source:
+        SourceImage|contains:
+            - mimikatz
+            - procdump
+            - ppldump
+            - dumpert
+            - andrewspecial
+    condition: selection and suspicious_source
+falsepositives:
+    - Authorized incident response and forensic investigations
+    - Approved security testing and penetration testing
+    - Legitimate administrative use of Sysinternals ProcDump
+level: high

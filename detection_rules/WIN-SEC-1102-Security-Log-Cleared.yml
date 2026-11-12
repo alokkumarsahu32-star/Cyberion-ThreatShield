@@ -1,0 +1,24 @@
+title: Windows Security Audit Log Cleared
+id: 3a7d9c21-6f84-4b52-a190-8e2c5d7f6130
+name: windows_security_audit_log_cleared
+status: experimental
+description: Detects Windows Security Event ID 1102, which records that the Windows Security audit log was cleared. Investigate the initiating account and surrounding activity to determine whether the action was authorized.
+references:
+    - https://attack.mitre.org/techniques/T1070/001/
+author: Cyberion ThreatShield
+date: 2026/11/03
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 1102
+    condition: selection
+falsepositives:
+    - Authorized security log maintenance
+    - Approved system administration or troubleshooting
+    - Legitimate incident response activities
+level: medium

@@ -1,0 +1,26 @@
+title: Suspicious Encoded PowerShell Command
+id: 4f7c2a91-8e35-4d60-b192-6a3e5f8c7041
+name: win_sysmon_encoded_powershell_command
+status: experimental
+description: Detects PowerShell process creation using the -EncodedCommand or -enc argument. Encoded commands may conceal script content, but this activity alone does not establish malicious execution.
+author: Cyberion ThreatShield
+date: 2026/11/06
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: '\powershell.exe'
+        CommandLine|re: '(?i)(?:^|\s)-(?:enc|encodedcommand)(?:\s|$)'
+    condition: selection
+falsepositives:
+    - Authorized administration using encoded PowerShell commands
+    - Software deployment and configuration management scripts
+    - Security testing and automation frameworks
+level: medium
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027.010

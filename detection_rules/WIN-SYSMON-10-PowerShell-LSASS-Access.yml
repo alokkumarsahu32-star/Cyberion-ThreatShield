@@ -1,0 +1,26 @@
+title: PowerShell Accessing LSASS
+id: 9f31a2b7-6d84-4c50-b219-8e7f3a5d6012
+name: powershell_lsass_access
+status: experimental
+description: Detects Sysmon ProcessAccess events where PowerShell accesses the LSASS process. Intended for temporal correlation with preceding DLL-load activity.
+references:
+    - https://attack.mitre.org/techniques/T1003/
+author: Cyberion ThreatShield
+date: 2026/11/03
+tags:
+    - attack.credential_access
+    - attack.t1003
+logsource:
+    product: windows
+    category: process_access
+detection:
+    selection:
+        SourceImage|endswith: '\powershell.exe'
+        TargetImage|endswith: '\lsass.exe'
+    condition: selection
+falsepositives:
+    - Authorized incident response and forensic investigations
+    - Approved security testing
+    - Legitimate administrative scripts accessing LSASS
+level: high
+

@@ -1,0 +1,23 @@
+title: LSASS Dump File Creation
+id: 8d2b6f41-3c97-4a50-b1e6-9f7c2d5a8043
+name: lsass_dump_file_creation
+status: experimental
+description: Detects Sysmon file creation events for files with a .dmp extension. This rule is a building block for correlation and does not independently establish that the file contains LSASS memory.
+author: Cyberion ThreatShield
+date: 2026/11/03
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        EventID: 11
+        TargetFilename|endswith: '.dmp'
+    condition: selection
+falsepositives:
+    - Legitimate application or system dump creation
+    - Authorized troubleshooting and forensic activity
+    - Approved crash dump generation
+level: medium
+tags:
+    - attack.credential_access
+    - attack.t1003.001

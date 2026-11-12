@@ -1,0 +1,29 @@
+title: LSASS Remote Thread Creation Followed by Process Access
+id: 5b9e2c71-4a83-46d0-9f12-7c5a3e8b1046
+name: lsass_remote_thread_and_process_access
+status: experimental
+description: Correlates remote thread creation targeting LSASS with process access
+  to LSASS by the same source process within 60 seconds.
+author: Cyberion ThreatShield
+date: 2026/11/08
+correlation:
+  type: temporal
+  rules:
+  - lsass_remote_thread_creation
+  - lsass_process_access
+  group-by:
+  - process_guid
+  timespan: 60s
+  aliases:
+    process_guid:
+      lsass_remote_thread_creation: SourceProcessGuid
+      lsass_process_access: SourceProcessGUID
+  condition: lsass_remote_thread_creation and lsass_process_access
+level: high
+falsepositives:
+- Authorized debugging and forensic activity
+- Legitimate endpoint security or diagnostic tools
+- Approved credential auditing activity
+tags:
+- attack.credential_access
+- attack.t1003.001

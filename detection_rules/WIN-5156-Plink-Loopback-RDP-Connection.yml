@@ -1,0 +1,34 @@
+title: Plink Process Connecting to Loopback RDP Port
+id: 5e8c2a41-7b93-4d16-a0f5-2c9e61b73842
+name: windows_plink_loopback_rdp_connection
+status: experimental
+description: |
+    Detects Windows Filtering Platform network connection events where
+    Plink is the application initiating a connection to loopback destination
+    port 3389. This behavior may indicate SSH-based RDP port forwarding.
+    The rule is experimental and requires investigation to distinguish
+    authorized tunneling from suspicious activity.
+references:
+    - https://attack.mitre.org/techniques/T1572/
+author: Cyberion ThreatShield
+date: 2026/11/03
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    product: windows
+    service: security
+detection:
+    selection_event:
+        EventID: 5156
+    selection_application:
+        Application|endswith: '\plink.exe'
+    selection_destination:
+        DestPort: 3389
+        DestAddress|startswith: '127.'
+    condition: selection_event and selection_application and selection_destination
+falsepositives:
+    - Authorized SSH tunneling or RDP port forwarding by administrators
+    - Approved remote administration and troubleshooting tools
+    - Security testing in a controlled environment
+level: medium

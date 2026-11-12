@@ -1,0 +1,273 @@
+
+:root {
+    color-scheme: dark;
+    --background: #0b1020;
+    --panel: #131c30;
+    --border: #27334b;
+    --text: #edf2ff;
+    --muted: #94a3b8;
+    --accent: #55b8ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    position: fixed;
+    padding: 28px 18px;
+    background: #0e1628;
+    border-right: 1px solid var(--border);
+}
+
+.sidebar h2 {
+    margin: 0;
+    letter-spacing: 3px;
+}
+
+.brand-subtitle,
+.eyebrow {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.sidebar nav {
+    display: grid;
+    gap: 8px;
+    margin-top: 40px;
+}
+
+.sidebar nav a {
+    color: var(--muted);
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 7px;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    color: white;
+    background: #1b2c46;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.main-content {
+    margin-left: 245px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+h1 {
+    margin: 8px 0;
+    font-size: 30px;
+}
+
+.muted,
+.stat-card p,
+.stat-card small,
+.module-card p {
+    color: var(--muted);
+}
+
+.status {
+    color: #78e4b1;
+    font-size: 11px;
+    border: 1px solid #285c4a;
+    border-radius: 20px;
+    padding: 10px 13px;
+}
+
+.status span {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #78e4b1;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.welcome {
+    margin: 28px 0;
+    padding: 25px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(120deg, #162744, #151a31);
+}
+
+.welcome h2 {
+    margin-bottom: 8px;
+}
+
+.welcome p:last-child {
+    color: #bdc9dc;
+    line-height: 1.6;
+}
+
+.stats,
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.stat-card,
+.module-card {
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.stat-card h2 {
+    font-size: 30px;
+    margin: 12px 0;
+}
+
+.stat-card small,
+.module-card small {
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.workspace {
+    margin-top: 35px;
+}
+
+.module-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.module-card {
+    scroll-margin-top: 20px;
+}
+
+.module-card > span {
+    color: var(--accent);
+    font-size: 12px;
+}
+
+.module-card h3 {
+    margin-bottom: 8px;
+}
+
+.module-card p {
+    min-height: 42px;
+    line-height: 1.5;
+    font-size: 13px;
+}
+
+footer {
+    margin-top: 35px;
+    padding: 20px 0;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+}
+
+@media (max-width: 1000px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .module-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .sidebar nav {
+        margin-top: 20px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 18px;
+    }
+
+    .stats,
+    .module-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cyberion Premium Module Button */
+.module-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 12px 20px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #168bff, #635bff);
+    border: 1px solid rgba(120, 190, 255, 0.4);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 15px rgba(30, 120, 255, 0.2);
+    transition: all 0.25s ease;
+}
+
+.module-button::after {
+    content: "→";
+    font-size: 18px;
+    transition: transform 0.25s ease;
+}
+
+.module-button:hover {
+    color: #ffffff;
+    background: linear-gradient(135deg, #35a7ff, #786cff);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 24px rgba(50, 140, 255, 0.4);
+}
+
+.module-button:hover::after {
+    transform: translateX(5px);
+}
+
+.module-button:active {
+    transform: translateY(0);
+}
+/* Center dashboard module buttons */
+.module-card .module-button {
+    display: flex;
+    width: fit-content;
+    margin: 16px auto 0;
+}

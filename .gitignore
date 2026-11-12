@@ -1,0 +1,45 @@
+
+.venv/
+__pycache__/
+.env
+*.pyc
+cyberion.db
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local environment and secrets
+.venv/
+.env
+
+# Local databases
+*.db
+
+# Backup files
+*.bak
+
+# Timestamped and numbered backup files
+*.bak*
+*.backup*
+*reports_backup*
+
+# Raw dataset: exclude large source evidence and temporary analysis artifacts
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.evtx
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.etl
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.pcap
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.pyc
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.ipynb
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.html
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.jpg
+datasets/raw/EVTX-ATTACK-SAMPLES/**/*.PNG
+
+# Exclude unnecessary third-party raw sample-pack files
+datasets/raw/EVTX-ATTACK-SAMPLES/Other/
+datasets/raw/EVTX-ATTACK-SAMPLES/Command and Control/
+datasets/raw/EVTX-ATTACK-SAMPLES/AutomatedTestingTools/
+datasets/raw/EVTX-ATTACK-SAMPLES/EVTX_ATT&CK_Metadata/
+datasets/raw/EVTX-ATTACK-SAMPLES/Evtx-to-Xml.ps1
+datasets/raw/EVTX-ATTACK-SAMPLES/Winlogbeat-Bulk-Read.ps1
+datasets/raw/EVTX-ATTACK-SAMPLES/winlogbeat_example.yml
+datasets/raw/EVTX-ATTACK-SAMPLES/.vscode/

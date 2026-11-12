@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Analyzer | Cyberion ThreatShield</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <style>
+        .upload-panel {
+            max-width: 850px;
+            margin-top: 28px;
+            padding: 24px;
+            border: 1px solid #27334b;
+            border-radius: 12px;
+            background: #131c30;
+        }
+        .upload-panel input[type=file] {
+            display: block;
+            width: 100%;
+            margin: 18px 0;
+            padding: 14px;
+            color: #edf2ff;
+            background: #0b1020;
+            border: 1px dashed #55b8ff;
+            border-radius: 8px;
+        }
+        .upload-panel button {
+            padding: 12px 20px;
+            color: white;
+            background: #1768a6;
+            border: 0;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        .notice {
+            padding: 12px;
+            margin: 16px 0;
+            background: #1b2c46;
+            border-radius: 7px;
+        }
+        .error { color: #ff9292; }
+        .result-table {
+            width: 100%;
+            margin-top: 24px;
+            border-collapse: collapse;
+        }
+        .result-table th, .result-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #27334b;
+            overflow-wrap: anywhere;
+        }
+        .result-table th { color: #55b8ff; }
+        .scroll-area { overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>CYBERION</h2>
+        <p class="brand-subtitle">THREATSHIELD</p>
+        <nav>
+    <a href="/">Dashboard</a>
+    <a class="active" href="/logs">Log Analyzer</a>
+    <a href="/detection-rules">Detection Engineering</a>
+    <a href="/attack-coverage">MITRE ATT&CK Coverage</a>
+    <a href="/threat-hunting">Threat Hunting</a>
+    <a href="/incident-cases">Incident Cases</a>
+    <a href="/#reports">Reports &amp; Coverage</a>
+</nav>
+        <p class="sidebar-footer">Detection Engineering Lab</p>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">LOG ANALYSIS</p>
+                <h1>Security Log Analyzer</h1>
+                <p class="muted">Upload a CSV file to validate and inspect its events.</p>
+            </div>
+        </header>
+
+        <section class="upload-panel">
+            <h2>Upload Security Logs</h2>
+            <p class="muted">
+                CSV files only. Use authorized data or the project's sample logs.
+            </p>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+            {% if message %}
+                <p class="notice">{{ message }}</p>
+            {% endif %}
+
+            <form action="/logs/analyze" method="post"
+                  enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <label for="file">Choose CSV file</label>
+                <input id="file" type="file" name="file"
+                       accept=".csv,text/csv" required>
+                <button type="submit">Validate & Analyze</button>
+            </form>
+
+            {% if result %}
+                <h2>Analysis Summary</h2>
+                <p><strong>File:</strong> {{ result.filename }}</p>
+                <p><strong>Rows processed:</strong> {{ result.total_rows }}</p>
+                <p><strong>Columns found:</strong> {{ result.column_count }}</p>
+                <p><strong>Analysis status:</strong> {{ result.status }}</p>
+
+                <h3>Preview (first 10 rows)</h3>
+                <div class="scroll-area">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                {% for column in result.columns %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result.rows %}
+                                <tr>
+                                    {% for column in result.columns %}
+                                        <td>{{ row[column] }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Security Detection Results -->
+                {% if result and result.alerts is defined %}
+                    <h2>Security Detection Results</h2>
+
+                    <p>
+                        <strong>Total Alerts:</strong>
+                        {{ result.alert_count }}
+                    </p>
+
+                    {% if result.alerts %}
+                        <div class="scroll-area">
+                            <table class="result-table">
+                                <thead>
+                                    <tr>
+                                        <th>Severity</th>
+                                        <th>Rule ID</th>
+                                        <th>Detection</th>
+                                        <th>Description</th>
+                                        <th>CSV Row</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for alert in result.alerts %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ alert.severity }}</strong>
+                                            </td>
+                                            <td>{{ alert.rule_id }}</td>
+                                            <td>{{ alert.title }}</td>
+                                            <td>{{ alert.message }}</td>
+                                            <td>{{ alert.row }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="muted">
+                            No configured detection rules were triggered.
+                        </p>
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
+

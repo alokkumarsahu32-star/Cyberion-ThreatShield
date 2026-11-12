@@ -1,0 +1,23 @@
+title: Process Access to LSASS
+id: 4c7a1e92-8b35-4d61-a9f2-7e3c5b0d8146
+name: lsass_process_access
+status: experimental
+description: Detects Sysmon process access events where the target process is LSASS. This rule is a building block for correlation and is not independently proof of credential dumping.
+author: Cyberion ThreatShield
+date: 2026/11/03
+logsource:
+    product: windows
+    category: process_access
+detection:
+    selection:
+        EventID: 10
+        TargetImage|endswith: '\lsass.exe'
+    condition: selection
+falsepositives:
+    - Legitimate endpoint security software accessing LSASS
+    - Authorized debugging and forensic activity
+    - Approved credential auditing tools
+level: medium
+tags:
+    - attack.credential_access
+    - attack.t1003.001

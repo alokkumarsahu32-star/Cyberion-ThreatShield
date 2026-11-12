@@ -1,0 +1,29 @@
+title: LSASS Access Correlated with Dump File Creation
+id: 2e6a9c41-7b35-4d80-a1f2-5c8e3b9d6047
+name: lsass_access_and_dump_creation
+status: experimental
+description: Correlates Sysmon LSASS process access with creation of a .dmp file by the same process GUID within 60 seconds, without requiring a specific event order. Dataset validation found matching process-level activity; this correlation is not independently proof that the dump contains LSASS memory.
+author: Cyberion ThreatShield
+date: 2026/11/03
+correlation:
+    type: temporal
+    rules:
+        - lsass_process_access
+        - lsass_dump_file_creation
+    group-by:
+        - process_guid
+        - Computer
+    timespan: 60s
+    aliases:
+        process_guid:
+            lsass_process_access: SourceProcessGUID
+            lsass_dump_file_creation: ProcessGuid
+    condition: lsass_process_access and lsass_dump_file_creation
+level: high
+falsepositives:
+    - Legitimate Task Manager or diagnostic dump creation
+    - Authorized endpoint security and forensic tools
+    - Approved administrative troubleshooting
+tags:
+    - attack.credential_access
+    - attack.t1003.001

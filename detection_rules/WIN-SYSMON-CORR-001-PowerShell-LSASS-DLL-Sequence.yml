@@ -1,0 +1,28 @@
+title: PowerShell DLL Load Followed by LSASS Access
+id: 7c4e2a91-5d63-4f80-a219-3b6e8d0c7425
+name: powershell_dll_then_lsass
+status: experimental
+description: Correlates selected DLL loads by a PowerShell process with subsequent
+  access to LSASS by the same process within 30 seconds.
+author: Cyberion ThreatShield
+date: 2026/11/03
+correlation:
+  type: temporal_ordered
+  rules:
+  - powershell_credential_dll_load
+  - powershell_lsass_access
+  group-by:
+  - process_guid
+  timespan: 30s
+  aliases:
+    process_guid:
+      powershell_credential_dll_load: ProcessGuid
+      powershell_lsass_access: SourceProcessGUID
+  condition: powershell_credential_dll_load and powershell_lsass_access
+level: high
+falsepositives:
+- Legitimate administrative or forensic PowerShell activity
+- Authorized credential auditing and security testing
+tags:
+- attack.credential_access
+- attack.t1003

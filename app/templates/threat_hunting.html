@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Hunting | Cyberion ThreatShield</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
+    <style>
+        .hunt-header {
+            margin-bottom: 25px;
+        }
+
+        .hunt-header p {
+            color: #9caec8;
+            margin-top: 8px;
+        }
+
+        .hunt-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .hunt-stat {
+            background: #111d32;
+            border: 1px solid #263852;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .hunt-stat span {
+            display: block;
+            color: #9caec8;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .hunt-stat strong {
+            color: #e8f0ff;
+            font-size: 25px;
+        }
+
+        .hunt-card {
+            background: #111d32;
+            border: 1px solid #263852;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .hunt-card h2 {
+            color: #e8f0ff;
+            margin-bottom: 12px;
+        }
+
+        .hunt-card h3 {
+            color: #8fb8ff;
+            font-size: 16px;
+            margin: 22px 0 10px;
+        }
+
+        .hunt-card p {
+            color: #c8d5e8;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .hunt-id {
+            color: #65b5ff;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .hunt-list {
+            padding-left: 20px;
+            color: #c8d5e8;
+        }
+
+        .hunt-list li {
+            margin-bottom: 9px;
+            line-height: 1.6;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .hunt-label {
+            display: inline-block;
+            background: #173b35;
+            color: #61e0b1;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .hunt-note {
+            margin-top: 16px;
+            padding: 15px;
+            background: #182942;
+            border-left: 3px solid #e5a642;
+            border-radius: 6px;
+        }
+
+        .hunt-note p {
+            font-size: 13px;
+        }
+
+        .hunt-back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #8fb8ff;
+            text-decoration: none;
+        }
+
+        .hunt-back:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .hunt-card {
+                padding: 16px;
+            }
+
+            .hunt-stat strong {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>CYBERION</h2>
+            <span>ThreatShield</span>
+        </div>
+
+        <nav>
+             <a href="/">Dashboard</a>
+             <a href="/logs">Log Analyzer</a>
+             <a href="/detection-rules">Detection Engineering</a>
+             <a href="/attack-coverage">MITRE ATT&CK Coverage</a>
+             <a class="active" href="/threat-hunting">Threat Hunting</a>
+             <a href="/incident-cases">Incident Cases</a>
+             <a href="/#reports">Reports &amp; Coverage</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>Logged in as {{ username }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <a href="/" class="hunt-back">← Back to Dashboard</a>
+
+        <header class="hunt-header">
+            <h1>Threat Hunting</h1>
+            <p>
+                Offline threat hunting investigations using the
+                EVTX-ATTACK-SAMPLES research dataset.
+            </p>
+        </header>
+
+        <section class="hunt-stats">
+            <div class="hunt-stat">
+                <span>Hunt Reports</span>
+                <strong>{{ hunt_reports|length }}</strong>
+            </div>
+
+            <div class="hunt-stat">
+                <span>HUNT-01 Correlated Pairs</span>
+                <strong>1</strong>
+            </div>
+
+            <div class="hunt-stat">
+                <span>HUNT-02 Correlated Pairs</span>
+                <strong>16</strong>
+            </div>
+
+            <div class="hunt-stat">
+                <span>Correlation Window</span>
+                <strong>60 sec</strong>
+            </div>
+        </section>
+
+        {% for hunt in hunt_reports %}
+        <article class="hunt-card">
+
+            <span class="hunt-id">{{ hunt.id }}</span>
+            <h2>{{ hunt.title }}</h2>
+
+            {% if hunt.id == "HUNT-02" %}
+                <span class="hunt-label">DATASET TEST: PASS</span>
+            {% else %}
+                <span class="hunt-label">CORRELATION IDENTIFIED</span>
+            {% endif %}
+
+            <h3>Objective / Hypothesis</h3>
+            <p>{{ hunt.objective }}</p>
+
+            <h3>Data Source</h3>
+            <p>{{ hunt.data_source }}</p>
+            <p>{{ hunt.events }}</p>
+
+            <h3>Hunting Methodology</h3>
+            <p>{{ hunt.method }}</p>
+
+            <h3>Results</h3>
+            <ul class="hunt-list">
+                {% for result in hunt.results %}
+                    <li>{{ result }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Confirmed Evidence / Notable Observations</h3>
+            <ul class="hunt-list">
+                {% for evidence in hunt.evidence %}
+                    <li>{{ evidence }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Assessment</h3>
+            <p>{{ hunt.assessment }}</p>
+
+            <h3>Conclusion</h3>
+            <p>{{ hunt.conclusion }}</p>
+
+            {% if hunt.id == "HUNT-02" %}
+            <div class="hunt-note">
+                <p>
+                    <strong>Interpretation limitation:</strong>
+                    The 16 correlated event pairs are not 16 unique
+                    incidents. Event correlation does not prove successful
+                    credential extraction or verify dump-file contents.
+                </p>
+            </div>
+            {% else %}
+            <div class="hunt-note">
+                <p>
+                    <strong>Interpretation limitation:</strong>
+                    The correlated events indicate suspicious LSASS
+                    interaction but do not independently prove that
+                    credentials were successfully extracted.
+                </p>
+            </div>
+            {% endif %}
+
+        </article>
+        {% endfor %}
+
+        <footer>
+            Cyberion ThreatShield · Threat Hunting Workspace
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
+

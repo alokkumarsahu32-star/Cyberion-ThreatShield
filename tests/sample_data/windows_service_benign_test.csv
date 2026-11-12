@@ -1,0 +1,4 @@
+Computer,EventID,ServiceName,AccountName,ImagePath,ServiceType,StartType,EVTX_Tactic,EVTX_FileName
+WIN10-TEST,7045,Spooler,LocalSystem,C:\Windows\System32\spoolsv.exe,user mode service,auto start,Normal Administration,benign_service.evtx
+WIN10-TEST,7045,wuauserv,LocalSystem,C:\Windows\System32\svchost.exe -k netsvcs,user mode service,auto start,Normal Administration,benign_service.evtx
+WIN10-TEST,7045,BITS,LocalSystem,C:\Windows\System32\svchost.exe -k netsvcs,user mode service,demand start,Normal Administration,benign_service.evtx

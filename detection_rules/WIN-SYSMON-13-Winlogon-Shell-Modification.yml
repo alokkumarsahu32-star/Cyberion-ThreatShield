@@ -1,0 +1,25 @@
+title: Suspicious Winlogon Shell Modification
+id: 7e2c9a41-5b63-4d80-a1f7-9c3e6b2d5048
+name: suspicious_winlogon_shell_modification
+status: experimental
+description: Detects Sysmon Event ID 13 modifications to the Winlogon Shell registry
+  value when the configured shell includes an executable under the user's AppData
+  Roaming directory. This may indicate persistence through shell modification.
+author: Cyberion ThreatShield
+date: 2026/11/08
+logsource:
+  product: windows
+  category: registry_set
+detection:
+  selection:
+    EventID: 13
+    TargetObject|endswith: \Winlogon\Shell
+    Details|contains: \AppData\Roaming\
+  condition: selection
+falsepositives:
+- Authorized software modifying the Winlogon Shell configuration
+- Legitimate administrative or troubleshooting activity
+level: high
+tags:
+- attack.persistence
+- attack.t1547.004

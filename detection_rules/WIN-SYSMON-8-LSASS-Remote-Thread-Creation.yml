@@ -1,0 +1,22 @@
+title: Remote Thread Creation Targeting LSASS
+id: 3a8f1c72-6d94-4b21-9e53-7c2a5f8d1046
+name: lsass_remote_thread_creation
+status: experimental
+description: Detects Sysmon Event ID 8 remote thread creation events where the target process is LSASS. This rule is a building block for correlation and is not independently proof of credential dumping.
+author: Cyberion ThreatShield
+date: 2026/11/08
+logsource:
+    product: windows
+    category: create_remote_thread
+detection:
+    selection:
+        EventID: 8
+        TargetImage|endswith: '\lsass.exe'
+    condition: selection
+falsepositives:
+    - Authorized debugging and forensic activity
+    - Legitimate endpoint security or diagnostic tools
+level: high
+tags:
+    - attack.credential_access
+    - attack.t1003.001

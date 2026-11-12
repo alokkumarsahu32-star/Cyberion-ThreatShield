@@ -1,0 +1,38 @@
+title: Suspicious Executable or Script Access Through Windows Admin Share
+id: 20f856b8-11da-4247-b9fb-62b6bd60af30
+name: suspicious_admin_share_file_access
+status: experimental
+description: |
+    Detects Windows Security Event ID 5145 file-access checks involving
+    executable, script, or DLL paths through the C$ administrative share.
+    This activity may be associated with remote file staging or lateral movement.
+references:
+    - https://attack.mitre.org/techniques/T1021/002/
+author: Cyberion ThreatShield
+date: 2026/10/29
+tags:
+    - attack.lateral_movement
+    - attack.t1021.002
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 5145
+        ShareName|endswith: '\C$'
+        ObjectType: File
+    suspicious_file_path:
+        RelativeTargetName|endswith:
+            - '.exe'
+            - '.bat'
+            - '.cmd'
+            - '.ps1'
+            - '.dll'
+            - '.scr'
+            - '.com'
+    condition: selection and suspicious_file_path
+falsepositives:
+    - Legitimate remote software deployment or administration
+    - Approved IT scripts and remote maintenance activity
+    - Backup or endpoint-management tools accessing administrative shares
+level: medium

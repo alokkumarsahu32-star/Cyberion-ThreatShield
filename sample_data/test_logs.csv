@@ -1,0 +1,9 @@
+timestamp,source,event_type,username,details
+2026-10-29T09:00:00Z,windows,login,analyst,Successful login
+2026-10-29T09:02:00Z,windows,process_start,analyst,Notepad started
+2026-10-29T09:05:00Z,firewall,connection,analyst,Outbound connection allowed
+2026-10-29T09:10:00Z,windows,login,unknown,Failed login attempt
+2026-10-29T09:10:10Z,windows,login,unknown,Failed login attempt
+2026-10-29T09:10:20Z,windows,login,unknown,Failed login attempt
+2026-10-29T09:11:00Z,windows,process_start,analyst,"powershell.exe -enc suspicious_command"
+2026-10-29T09:12:00Z,firewall,connection,unknown,Unusual outbound connection
